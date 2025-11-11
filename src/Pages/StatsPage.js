@@ -16,6 +16,8 @@ function StatsPage() {
     async function fetchData() {
       const { sortedUsers, classTags, dormTags, numAlive } = await getUsers();
 
+      console.log(sortedUsers)
+
       setLeaderBoard(sortedUsers);
       setDormStats(dormTags);
       setClassStats(classTags);
@@ -26,17 +28,19 @@ function StatsPage() {
 
     fetchData();
   }, []);
+
   function toTitleCase(str) {
-    return str.replace(/\w\S*/g, function (txt) {
-      return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
-    });
+    return str.replace(/\w\S*/g, txt =>
+      txt.charAt(0).toUpperCase() + txt.slice(1).toLowerCase()
+    );
   }
+
   const [countdown, setCountdown] = useState("");
 
   useEffect(() => {
     const intervalId = setInterval(() => {
       const now = new Date().getTime();
-      const targetDate = new Date("November 18, 2024 08:00:00").getTime();
+      const targetDate = new Date("November 11, 2025 11:20:00").getTime();
       const distance = targetDate - now;
       const days = Math.floor(distance / (1000 * 60 * 60 * 24));
       const hours = Math.floor(
@@ -72,7 +76,7 @@ function StatsPage() {
                         {entry.firstName} {entry.lastName} {entry.alive ? '' : ' (Dead)'}
                       </h3>
                       <p>
-                        {toTitleCase(entry.class)} - {toTitleCase(entry.dorm)} 
+                        {toTitleCase(entry.class)}
                       </p>
                     </div>
                   </div>

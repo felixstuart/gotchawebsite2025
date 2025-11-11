@@ -18,11 +18,18 @@ function HomePage() {
     const unsubscribe = onAuthStateChanged(auth, async (authUser) => {
       if (authUser) {
         // console.log("HomePage:", authUser.email);
-        const { userData } = await fetchUserDocByEmail(authUser.email);
+        const formattedEmail = authUser.email.replace(/^([^@]+)/, (m) =>
+          m
+            .split("_")
+            .map((p) => p.charAt(0).toUpperCase() + p.slice(1))
+            .join("_")
+        );
+        const { userData } = await fetchUserDocByEmail(formattedEmail);
         const targetData = await fetchUserDocByEmail(userData?.target);
         const lastWords = await getLastWords();
 
         setUser(userData);
+        console.log(targetData);
         setTarget(targetData.userData);
         setAllLastWords(lastWords);
 
@@ -51,7 +58,6 @@ function HomePage() {
           <h2>
             {user?.firstName} {user?.lastName}
           </h2>
-          
         </div>
 
         <div className="Cards">

@@ -10,15 +10,16 @@ import { getStorage } from "firebase/storage";
 // Your web app's Firebase configuration
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
 const firebaseConfig = {
-  apiKey: "AIzaSyDJcTBXZZcw1hpWAyith3HtPBZRAx7vkvE",
-  authDomain: "gotcha-b4b13.firebaseapp.com",
-  databaseURL: "https://gotcha-b4b13-default-rtdb.firebaseio.com",
-  projectId: "gotcha-b4b13",
-  storageBucket: "gotcha-b4b13.appspot.com",
-  messagingSenderId: "628191290317",
-  appId: "1:628191290317:web:60366a8e1e1b879a9e9a84",
-  measurementId: "G-MRTCXHSQDK"
+  apiKey: "AIzaSyC35OSKmGGTL1l_T_lH_rjrhx6gUB1vkWY",
+  authDomain: "felixs-gotcha-tes.firebaseapp.com",
+  databaseURL: "https://felixs-gotcha-tes-default-rtdb.firebaseio.com",
+  projectId: "felixs-gotcha-tes",
+  storageBucket: "felixs-gotcha-tes.firebasestorage.app",
+  messagingSenderId: "680586060563",
+  appId: "1:680586060563:web:2648fbfc3511b636c970e6",
+  measurementId: "G-GEVGLH9M75"
 };
+
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
 const analytics = getAnalytics(app);
