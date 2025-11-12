@@ -1,5 +1,8 @@
 {
   "projects": {
-    "default": "gotcha-b4b13"
-  }
+    "default": "felixs-gotcha-tes",
+    "dev": "felixs-gotcha-tes"
+  },
+  "targets": {},
+  "etags": {}
 }

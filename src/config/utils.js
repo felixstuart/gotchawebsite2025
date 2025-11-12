@@ -9,6 +9,9 @@ import {
   collection,
   serverTimestamp,
 } from "firebase/firestore";
+import { getPerformance, trace } from "firebase/performance";
+
+const perf = getPerformance();
 
 // Fetch a user's document from the database by email (for chasers and targets)
 export const fetchUserDocByEmail = async (email) => {
@@ -72,6 +75,7 @@ export const tagOut = async (email) => {
     // Get the current user
     const user = await fetchUserDocByEmail(email);
     const userData = user.userData;
+    console.log(userData.alive)
 
     // If the user is already out, either get last names or return
     if (userData.alive === false) {
@@ -167,6 +171,8 @@ function shuffle(array) {
 }
 
 export const getUsers = async () => {
+  const dbTrace = trace(perf, "database_fetch_users");
+  dbTrace.start();
   try {
     const querySnapshot = await getDocs(collection(db, "data"));
     let allUsers = [];
@@ -230,9 +236,10 @@ export const getUsers = async () => {
     }, {});
 
     const numAlive = aliveUsers.length;
-
+  dbTrace.stop()
     return { allUsers, sortedUsers, classTags, dormTags, numAlive };
   } catch (error) {
+    dbTrace.stop();
     console.log(error);
   }
 };

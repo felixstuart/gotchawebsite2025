@@ -14,22 +14,33 @@ function HomePage() {
   const [allLastWords, setAllLastWords] = useState([]);
 
   useEffect(() => {
-    console.log("now", auth.currentUser);
     const unsubscribe = onAuthStateChanged(auth, async (authUser) => {
       if (authUser) {
         // console.log("HomePage:", authUser.email);
-        const { userData } = await fetchUserDocByEmail(authUser.email);
-        const targetData = await fetchUserDocByEmail(userData?.target);
-        const lastWords = await getLastWords();
+        const formattedEmail = authUser.email.replace(/^([^@]+)/, (m) =>
+          m
+            .split("_")
+            .map((p) => p.charAt(0).toUpperCase() + p.slice(1))
+            .join("_")
+        );
 
-        setUser(userData);
-        setTarget(targetData.userData);
-        setAllLastWords(lastWords);
+        if (authUser.email.endsWith("milton.edu")) {
+          const { userData } = await fetchUserDocByEmail(formattedEmail);
+          const targetData = await fetchUserDocByEmail(userData?.target);
+          const lastWords = await getLastWords();
 
-        console.log(lastWords);
+          setUser(userData);
+          console.log(targetData);
+          setTarget(targetData.userData);
+          setAllLastWords(lastWords);
+
+          console.log(lastWords);
+        } else {
+            navigate("/login")
+        }
       } else {
-        navigate("/login");
-      }
+          navigate("/login");
+        }
     });
   }, [auth.currentUser]);
 
@@ -51,7 +62,6 @@ function HomePage() {
           <h2>
             {user?.firstName} {user?.lastName}
           </h2>
-          
         </div>
 
         <div className="Cards">

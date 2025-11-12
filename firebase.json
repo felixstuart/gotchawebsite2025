@@ -1,6 +1,5 @@
 {
   "hosting": {
-    "site": "gotcha2024help",
     "public": "build",
     "ignore": [
       "firebase.json",

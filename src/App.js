@@ -26,14 +26,12 @@ function App() {
   return (
     <div className="App">
       <Navbar />
-
       <Routes>
         {user ? (
           <Route path="/*" element={<HomePage />} />
         ) : (
           <Route path="/*" element={<Navigate to="/login" />} />
         )}
-
         <Route path="/login" element={<LoginPage />} />
         <Route path="/stats" element={<StatsPage />} />
       </Routes>
