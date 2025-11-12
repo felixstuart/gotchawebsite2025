@@ -75,6 +75,7 @@ export const tagOut = async (email) => {
     // Get the current user
     const user = await fetchUserDocByEmail(email);
     const userData = user.userData;
+    console.log(userData.alive)
 
     // If the user is already out, either get last names or return
     if (userData.alive === false) {

@@ -14,7 +14,6 @@ function HomePage() {
   const [allLastWords, setAllLastWords] = useState([]);
 
   useEffect(() => {
-    console.log("now", auth.currentUser);
     const unsubscribe = onAuthStateChanged(auth, async (authUser) => {
       if (authUser) {
         // console.log("HomePage:", authUser.email);
@@ -24,19 +23,24 @@ function HomePage() {
             .map((p) => p.charAt(0).toUpperCase() + p.slice(1))
             .join("_")
         );
-        const { userData } = await fetchUserDocByEmail(formattedEmail);
-        const targetData = await fetchUserDocByEmail(userData?.target);
-        const lastWords = await getLastWords();
 
-        setUser(userData);
-        console.log(targetData);
-        setTarget(targetData.userData);
-        setAllLastWords(lastWords);
+        if (authUser.email.endsWith("milton.edu")) {
+          const { userData } = await fetchUserDocByEmail(formattedEmail);
+          const targetData = await fetchUserDocByEmail(userData?.target);
+          const lastWords = await getLastWords();
 
-        console.log(lastWords);
+          setUser(userData);
+          console.log(targetData);
+          setTarget(targetData.userData);
+          setAllLastWords(lastWords);
+
+          console.log(lastWords);
+        } else {
+            navigate("/login")
+        }
       } else {
-        navigate("/login");
-      }
+          navigate("/login");
+        }
     });
   }, [auth.currentUser]);
 
