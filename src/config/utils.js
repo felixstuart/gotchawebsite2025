@@ -73,7 +73,14 @@ const submitLastWords = async (email, fullName, lw) => {
 export const tagOut = async (email) => {
   try {
     // Get the current user
-    const user = await fetchUserDocByEmail(email);
+    // format the email the same way it is in the db
+    const formattedEmail = email.replace(/^([^@]+)/, (m) =>
+          m
+            .split("_")
+            .map((p) => p.charAt(0).toUpperCase() + p.slice(1))
+            .join("_")
+        );
+    const user = await fetchUserDocByEmail(formattedEmail);
     const userData = user.userData;
     console.log(userData.alive)
 
