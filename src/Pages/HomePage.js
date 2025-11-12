@@ -10,6 +10,7 @@ import { signOut } from "firebase/auth";
 function HomePage() {
   const navigate = useNavigate();
   const [user, setUser] = useState(null);
+  const [alive, setAlive] = useState(true);
   const [target, setTarget] = useState(null);
   const [allLastWords, setAllLastWords] = useState([]);
 
@@ -30,17 +31,18 @@ function HomePage() {
           const lastWords = await getLastWords();
 
           setUser(userData);
+          setAlive(userData.alive);
           console.log(targetData);
           setTarget(targetData.userData);
           setAllLastWords(lastWords);
 
           console.log(lastWords);
         } else {
-            navigate("/login")
-        }
-      } else {
           navigate("/login");
         }
+      } else {
+        navigate("/login");
+      }
     });
   }, [auth.currentUser]);
 
@@ -65,9 +67,14 @@ function HomePage() {
         </div>
 
         <div className="Cards">
-          <div className="Card" onClick={() => tagOut(auth.currentUser.email)}>
-            <h3 className="tagOut">Tag Out</h3>
-          </div>
+          {alive ? (
+            <div
+              className="Card"
+              onClick={() => tagOut(auth.currentUser.email)}
+            >
+              <h3 className="tagOut">Tag Out</h3>
+            </div>
+          ) : null}
 
           <div className="Card">
             <h3>Tag Count</h3>
@@ -75,13 +82,14 @@ function HomePage() {
           </div>
         </div>
 
-        <div className="Card">
-          <h3>Target</h3>
-          <p>
-            {target?.firstName} {target?.lastName}
-          </p>
-        </div>
-
+        {alive ? (
+          <div className="Card">
+            <h3>Target</h3>
+            <p>
+              {target?.firstName} {target?.lastName}
+            </p>
+          </div>
+        ) : null}
         <button className="log-out-button" onClick={handleSignOut}>
           Log Out
         </button>
