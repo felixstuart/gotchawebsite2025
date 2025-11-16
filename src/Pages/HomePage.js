@@ -91,7 +91,6 @@ function HomePage() {
             <p>
               {target?.firstName} {target?.lastName}
             </p>
-            <br />
             <p className="target-email">{targetEmail}</p>
           </div>
         ) : null}
