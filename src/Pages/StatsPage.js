@@ -9,14 +9,14 @@ function StatsPage() {
   const [dormStats, setDormStats] = useState({});
   const [ClassStats, setClassStats] = useState({});
   const [numberAlive, setNumberAlive] = useState(0);
-
+  const [hoursLeft, setHoursLeft] = useState(0);
   // fix firebase error: quota exceeded
 
   useEffect(() => {
     async function fetchData() {
       const { sortedUsers, classTags, dormTags, numAlive } = await getUsers();
 
-      console.log(sortedUsers)
+      console.log(sortedUsers);
 
       setLeaderBoard(sortedUsers);
       setDormStats(dormTags);
@@ -30,8 +30,9 @@ function StatsPage() {
   }, []);
 
   function toTitleCase(str) {
-    return str.replace(/\w\S*/g, txt =>
-      txt.charAt(0).toUpperCase() + txt.slice(1).toLowerCase()
+    return str.replace(
+      /\w\S*/g,
+      (txt) => txt.charAt(0).toUpperCase() + txt.slice(1).toLowerCase()
     );
   }
 
@@ -46,6 +47,7 @@ function StatsPage() {
       const hours = Math.floor(
         (distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)
       );
+      setHoursLeft(hours);
       const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
       const seconds = Math.floor((distance % (1000 * 60)) / 1000);
       setCountdown(`${days}d ${hours}h ${minutes}m ${seconds}s`);
@@ -55,7 +57,7 @@ function StatsPage() {
 
   return (
     <div className="StatsPage Page">
-      {/* <img src={fireGif} className="fire"></img> */}
+      {hoursLeft < 24 ? <img src={fireGif} className="fire"></img> : null}
       <div className="columns">
         <div className="column-1">
           <h1>Leaderboard</h1>
@@ -73,11 +75,10 @@ function StatsPage() {
                             : "var(--secondary-color",
                         }}
                       >
-                        {entry.firstName} {entry.lastName} {entry.alive ? '' : ' (Dead)'}
+                        {entry.firstName} {entry.lastName}{" "}
+                        {entry.alive ? "" : " (Dead)"}
                       </h3>
-                      <p>
-                        {toTitleCase(entry.class)}
-                      </p>
+                      <p>{toTitleCase(entry.class)}</p>
                     </div>
                   </div>
                   <h2 className="num-tags">{entry.tags}</h2>
@@ -93,7 +94,7 @@ function StatsPage() {
             <h1 className="countdown">{countdown}</h1>
             <p className="numAlive">
               <span className="special-red">{numberAlive} </span>
-            people left
+              people left
             </p>
           </div>
           <div className="row-1">

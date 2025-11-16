@@ -8,6 +8,7 @@ import {
   setDoc,
   collection,
   serverTimestamp,
+  updateDoc,
 } from "firebase/firestore";
 import { getPerformance, trace } from "firebase/performance";
 
@@ -75,14 +76,13 @@ export const tagOut = async (email) => {
     // Get the current user
     // format the email the same way it is in the db
     const formattedEmail = email.replace(/^([^@]+)/, (m) =>
-          m
-            .split("_")
-            .map((p) => p.charAt(0).toUpperCase() + p.slice(1))
-            .join("_")
-        );
+      m
+        .split("_")
+        .map((p) => p.charAt(0).toUpperCase() + p.slice(1))
+        .join("_")
+    );
     const user = await fetchUserDocByEmail(formattedEmail);
     const userData = user.userData;
-    console.log(userData.alive)
 
     // If the user is already out, either get last names or return
     if (userData.alive === false) {
@@ -92,35 +92,32 @@ export const tagOut = async (email) => {
           alert("Please type your last words and try again.");
           return;
         }
-  
+
         //reupdate user data with last words
         const fullName = userData.firstName + " " + userData.lastName;
         await submitLastWords(email, fullName, lastWords);
         userData.lastWords = lastWords;
         await setDoc(user.userRef, userData);
         alert("Your last words have been entered.");
-        return;
-      }
-      else{
+        return true;
+      } else {
         alert("You are already out!");
-        return;
+        return false;
       }
-
     }
 
     // Get the user's chaser
-    const chaser = await fetchUserDocByEmail(userData.chaser);
+    const chaser = await fetchUserDocByEmail(formatEmail(userData.chaser));
     const chaserData = chaser.userData;
 
-    const target = await fetchUserDocByEmail(userData.target);
+    const target = await fetchUserDocByEmail(formatEmail(userData.target));
     const targetData = target.userData;
 
-   
     // Update necessary fields
     userData.alive = false;
     chaserData.tags += 1;
-    chaserData.target = userData.target;
-    targetData.chaser = userData.chaser;
+    chaserData.target = formatEmail(userData.target);
+    targetData.chaser = formatEmail(userData.chaser);
 
     // Post changes to database
     const answer = window.confirm("Are you sure you want to tag out?");
@@ -128,11 +125,11 @@ export const tagOut = async (email) => {
     if (answer) {
       await setDoc(user.userRef, userData);
       await setDoc(chaser.userRef, chaserData);
+      await setDoc(target.userRef, targetData)
       // Get the user's last words
       let lastWords = prompt("Please type in your last words");
       if (lastWords === null || lastWords === undefined || lastWords === "") {
         alert("Please type your last words and try again.");
-        return;
       }
 
       //reupdate user data with last words
@@ -140,15 +137,15 @@ export const tagOut = async (email) => {
       await submitLastWords(email, fullName, lastWords);
       userData.lastWords = lastWords;
       await setDoc(user.userRef, userData);
-
-      alert("You have been tagged out.");
+      return true;
     } else {
       alert("Cancelled.");
+      return false;
     }
-
   } catch (error) {
     alert(error.message);
     console.log(error);
+    return false;
   }
 };
 
@@ -201,8 +198,6 @@ export const getUsers = async () => {
       })
       .slice(0, 20);
 
-    
-
     const classTags = allUsers.reduce((acc, user) => {
       const class1 = user.class;
       const tags = user.tags;
@@ -217,7 +212,6 @@ export const getUsers = async () => {
     //   acc[dorm] = (acc[dorm] || 0) + tags;
     //   return acc;
     // }, {});
-
 
     let dormTags = allUsers.reduce((acc, user) => {
       const dorm = user.dorm;
@@ -243,10 +237,19 @@ export const getUsers = async () => {
     }, {});
 
     const numAlive = aliveUsers.length;
-  dbTrace.stop()
+    dbTrace.stop();
     return { allUsers, sortedUsers, classTags, dormTags, numAlive };
   } catch (error) {
     dbTrace.stop();
     console.log(error);
   }
 };
+
+function formatEmail(email) {
+  return email.replace(/^([^@]+)/, (m) =>
+    m
+      .split("_")
+      .map((p) => p.charAt(0).toUpperCase() + p.slice(1))
+      .join("_")
+  );
+}
