@@ -13,6 +13,7 @@ function HomePage() {
   const [alive, setAlive] = useState(true);
   const [target, setTarget] = useState(null);
   const [allLastWords, setAllLastWords] = useState([]);
+  const [targetEmail, setTargetEmail] = useState([]);
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, async (authUser) => {
@@ -35,6 +36,8 @@ function HomePage() {
           console.log(targetData);
           setTarget(targetData.userData);
           setAllLastWords(lastWords);
+
+          setTargetEmail(userData.target);
 
           console.log(lastWords);
         } else {
@@ -88,6 +91,8 @@ function HomePage() {
             <p>
               {target?.firstName} {target?.lastName}
             </p>
+            <br />
+            <p className="target-email">{targetEmail}</p>
           </div>
         ) : null}
         <button className="log-out-button" onClick={handleSignOut}>
