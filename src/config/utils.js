@@ -99,7 +99,7 @@ export const tagOut = async (email) => {
         //reupdate user data with last words
         const fullName = userData.firstName + " " + userData.lastName;
         await submitLastWords(email, fullName, lastWords);
-        userData.lastWords = lastWords;
+        userData.lastWords = replaceProfanities(lastWords);
         await setDoc(user.userRef, userData);
         alert("Your last words have been entered.");
         return true;
@@ -138,7 +138,7 @@ export const tagOut = async (email) => {
       //reupdate user data with last words
       const fullName = userData.firstName + " " + userData.lastName;
       await submitLastWords(email, fullName, lastWords);
-      userData.lastWords = lastWords;
+      userData.lastWords = replaceProfanities(lastWords);
       await setDoc(user.userRef, userData);
       return true;
     } else {
