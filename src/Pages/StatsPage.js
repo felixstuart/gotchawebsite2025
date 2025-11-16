@@ -41,7 +41,7 @@ function StatsPage() {
   useEffect(() => {
     const intervalId = setInterval(() => {
       const now = new Date().getTime();
-      const targetDate = new Date("November 21, 2025 14:00:00").getTime();
+      const targetDate = new Date("2025-11-21T14:00:00-05:00").getTime();
       const distance = targetDate - now;
       const days = Math.floor(distance / (1000 * 60 * 60 * 24));
       const hours = Math.floor(
