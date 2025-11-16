@@ -1,5 +1,7 @@
 // bryan sukidi
 
+import { replaceProfanities } from 'no-profanity';
+
 import { db } from "./firebase";
 import {
   doc,
@@ -57,10 +59,11 @@ export const addTestUser = async (
 const submitLastWords = async (email, fullName, lw) => {
   try {
     // create a new document in the "lastWords" collection
+    const cleanedLW = replaceProfanities(lw);
     const lastWordsRef = doc(collection(db, "lastWords"), email);
     await setDoc(lastWordsRef, {
       Author: fullName,
-      Lw: lw,
+      Lw: cleanedLW,
       TimeStamp: serverTimestamp(),
     });
   } catch (error) {
