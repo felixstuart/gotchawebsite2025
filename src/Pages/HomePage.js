@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { onAuthStateChanged } from "firebase/auth";
 import { auth } from "../config/firebase";
 import { fetchUserDocByEmail, getLastWords, tagOut } from "../config/utils";
+import { replaceProfanities } from 'no-profanity';
 import { useNavigate } from "react-router-dom";
 import "./HomePage.css";
 import { signOut } from "firebase/auth";
@@ -29,10 +30,15 @@ function HomePage() {
           const targetData = await fetchUserDocByEmail(userData?.target);
           const lastWords = await getLastWords();
 
+          const cleanedLastWords = lastWords.map(entry => ({
+          ...entry,
+          Lw: replaceProfanities(entry.Lw)
+          }));
+
           setUser(userData);
           console.log(targetData);
           setTarget(targetData.userData);
-          setAllLastWords(lastWords);
+          setAllLastWords(cleanedLastWords);
 
           console.log(lastWords);
         } else {
