@@ -47,7 +47,7 @@ function StatsPage() {
       const hours = Math.floor(
         (distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)
       );
-      setHoursLeft(days*24+hours);
+      setHoursLeft(days*24+hours)
       const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
       const seconds = Math.floor((distance % (1000 * 60)) / 1000);
       setCountdown(`${days}d ${hours}h ${minutes}m ${seconds}s`);
