@@ -83,6 +83,9 @@ export const tagOut = async (email) => {
         .split("_")
         .map((p) => p.charAt(0).toUpperCase() + p.slice(1))
         .join("_")
+        .split("-")
+        .map((p) => p.charAt(0).toUpperCase() + p.slice(1))
+        .join("-")
     );
     const user = await fetchUserDocByEmail(formattedEmail);
     const userData = user.userData;

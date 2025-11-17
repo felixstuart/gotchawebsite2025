@@ -23,8 +23,12 @@ function HomePage() {
         const formattedEmail = authUser.email.replace(/^([^@]+)/, (m) =>
           m
             .split("_")
-            .map((p) => p.charAt(0).toUpperCase() + p.slice(1))
-            .join("_")
+          .map((p) => p.charAt(0).toUpperCase() + p.slice(1))
+          .join("_")
+          .split("-")
+          .map((p) => p.charAt(0).toUpperCase() + p.slice(1))
+          .join("-")
+
         );
 
         if (authUser.email.endsWith("milton.edu")) {
