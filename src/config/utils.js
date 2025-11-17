@@ -78,15 +78,20 @@ export const tagOut = async (email) => {
   try {
     // Get the current user
     // format the email the same way it is in the db
-    const formattedEmail = email.replace(/^([^@]+)/, (m) =>
-      m
-        .split("_")
-        .map((p) => p.charAt(0).toUpperCase() + p.slice(1))
-        .join("_")
-        .split("-")
-        .map((p) => p.charAt(0).toUpperCase() + p.slice(1))
-        .join("-")
-    );
+    const formattedEmail = authUser.email.replace(/^([^@]+)/, (m) => {
+          let formatted = m
+          .split("_")
+          .map((p) => p.charAt(0).toUpperCase() + p.slice(1))
+          .join("_")
+          .split("-")
+          .map((p) => p.charAt(0).toUpperCase() + p.slice(1))
+          .join("-");
+
+  // Capitalize the very first letter of the whole username
+          formatted = formatted.charAt(0).toUpperCase() + formatted.slice(1);
+
+  return formatted;
+});
     const user = await fetchUserDocByEmail(formattedEmail);
     const userData = user.userData;
 
