@@ -78,7 +78,7 @@ export const tagOut = async (email) => {
   try {
     // Get the current user
     // format the email the same way it is in the db
-    const formattedEmail = authUser.email.replace(/^([^@]+)/, (m) => {
+    const formattedEmail = email.replace(/^([^@]+)/, (m) => {
           let formatted = m
           .split("_")
           .map((p) => p.charAt(0).toUpperCase() + p.slice(1))
