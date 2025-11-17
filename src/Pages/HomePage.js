@@ -20,16 +20,20 @@ function HomePage() {
     const unsubscribe = onAuthStateChanged(auth, async (authUser) => {
       if (authUser) {
         // console.log("HomePage:", authUser.email);
-        const formattedEmail = authUser.email.replace(/^([^@]+)/, (m) =>
-          m
-            .split("_")
+        const formattedEmail = authUser.email.replace(/^([^@]+)/, (m) => {
+          let formatted = m
+          .split("_")
           .map((p) => p.charAt(0).toUpperCase() + p.slice(1))
           .join("_")
           .split("-")
           .map((p) => p.charAt(0).toUpperCase() + p.slice(1))
-          .join("-")
+          .join("-");
 
-        );
+  // Capitalize the very first letter of the whole username
+          formatted = formatted.charAt(0).toUpperCase() + formatted.slice(1);
+
+  return formatted;
+});
 
         if (authUser.email.endsWith("milton.edu")) {
           const { userData } = await fetchUserDocByEmail(formattedEmail);
