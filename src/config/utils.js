@@ -83,16 +83,14 @@ export const tagOut = async (email) => {
           .split("_")
           .map((p) => p.charAt(0).toUpperCase() + p.slice(1))
           .join("_")
-          .split("-")
-          .map((p) => p.charAt(0).toUpperCase() + p.slice(1))
-          .join("-");
-
-  // Capitalize the very first letter of the whole username
           formatted = formatted.charAt(0).toUpperCase() + formatted.slice(1);
 
   return formatted;
 });
-    const user = await fetchUserDocByEmail(formattedEmail);
+
+
+    const user = await fetchUserDocByEmail(formattedEmail) || await fetchUserDocByEmail(email);
+
     const userData = user.userData;
 
     // If the user is already out, either get last names or return

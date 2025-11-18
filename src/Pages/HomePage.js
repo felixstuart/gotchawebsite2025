@@ -25,18 +25,20 @@ function HomePage() {
           .split("_")
           .map((p) => p.charAt(0).toUpperCase() + p.slice(1))
           .join("_")
-          .split("-")
-          .map((p) => p.charAt(0).toUpperCase() + p.slice(1))
-          .join("-");
-
-  // Capitalize the very first letter of the whole username
           formatted = formatted.charAt(0).toUpperCase() + formatted.slice(1);
 
   return formatted;
 });
 
         if (authUser.email.endsWith("milton.edu")) {
-          const { userData } = await fetchUserDocByEmail(formattedEmail);
+            const userDoc =
+        (await fetchUserDocByEmail(formattedEmail)) ||
+        (await fetchUserDocByEmail(authUser.email)) ||
+        {};
+
+      const { userData } = userDoc;
+
+          console.log(authUser.email)
           const targetData = await fetchUserDocByEmail(userData?.target);
           const lastWords = await getLastWords();
 
@@ -46,7 +48,7 @@ function HomePage() {
           }));
 
           setUser(userData);
-          setAlive(userData.alive);
+          setAlive(userData.alive ?? false);
           console.log(targetData);
           setTarget(targetData.userData);
           setAllLastWords(cleanedLastWords);
