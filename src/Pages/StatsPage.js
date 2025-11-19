@@ -16,7 +16,6 @@ function StatsPage() {
     async function fetchData() {
       const { sortedUsers, classTags, dormTags, numAlive } = await getUsers();
 
-      console.log(sortedUsers);
 
       setLeaderBoard(sortedUsers);
       setDormStats(dormTags);
