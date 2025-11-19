@@ -26,9 +26,9 @@ function HomePage() {
           .map((p) => p.charAt(0).toUpperCase() + p.slice(1))
           .join("_")
           formatted = formatted.charAt(0).toUpperCase() + formatted.slice(1);
-
-  return formatted;
-});
+            console.log(formatted);
+          return formatted;
+          });
 
         if (authUser.email.endsWith("milton.edu")) {
 
@@ -43,7 +43,6 @@ function HomePage() {
 
           setUser(userData);
           setAlive(userData.alive ?? false);
-          console.log(targetData);
           setTarget(targetData.userData);
           setAllLastWords(cleanedLastWords);
 
