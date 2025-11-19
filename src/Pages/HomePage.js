@@ -16,24 +16,27 @@ function HomePage() {
   const [allLastWords, setAllLastWords] = useState([]);
   const [targetEmail, setTargetEmail] = useState([]);
 
+
+  const formatEmailString = (email) => {
+          if (!email) return "";
+            return email.replace(/^([^@]+)/, (m) => {
+              return m
+              .split("_")
+              .map((p) => p.charAt(0).toUpperCase() + p.slice(1))
+              .join("_");
+                });
+              };
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, async (authUser) => {
       if (authUser) {
         // console.log("HomePage:", authUser.email);
-        const formattedEmail = authUser.email.replace(/^([^@]+)/, (m) => {
-          let formatted = m
-          .split("_")
-          .map((p) => p.charAt(0).toUpperCase() + p.slice(1))
-          .join("_")
-          formatted = formatted.charAt(0).toUpperCase() + formatted.slice(1);
-            console.log(formatted);
-          return formatted;
-          });
 
         if (authUser.email.endsWith("milton.edu")) {
 
+          const formattedEmail = formatEmailString(authUser.email);
           const { userData } = await fetchUserDocByEmail(formattedEmail);
-          const targetData = await fetchUserDocByEmail(userData?.target);
+          const formattedTargetemail = formatEmailString(userData?.target);
+          const targetData = await fetchUserDocByEmail(formattedTargetemail);
           const lastWords = await getLastWords();
 
           const cleanedLastWords = lastWords.map(entry => ({
