@@ -203,7 +203,6 @@ export const getUsers = async () => {
       const class1 = user.class;
       const tags = user.tags;
       acc[class1] = (acc[class1] || 0) + tags;
-      console.log(acc);
       return acc;
     }, {});
 
