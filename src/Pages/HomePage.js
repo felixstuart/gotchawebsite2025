@@ -31,20 +31,14 @@ function HomePage() {
 });
 
         if (authUser.email.endsWith("milton.edu")) {
-            const userDoc =
-        (await fetchUserDocByEmail(formattedEmail)) ||
-        (await fetchUserDocByEmail(authUser.email)) ||
-        {};
 
-      const { userData } = userDoc;
-
-          console.log(authUser.email)
+          const { userData } = await fetchUserDocByEmail(formattedEmail);
           const targetData = await fetchUserDocByEmail(userData?.target);
           const lastWords = await getLastWords();
 
           const cleanedLastWords = lastWords.map(entry => ({
-          ...entry,
-          Lw: replaceProfanities(entry.Lw)
+            ...entry,
+            Lw: typeof entry.Lw === "string" ? replaceProfanities(entry.Lw) : ""
           }));
 
           setUser(userData);

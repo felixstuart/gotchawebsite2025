@@ -89,7 +89,7 @@ export const tagOut = async (email) => {
 });
 
 
-    const user = await fetchUserDocByEmail(formattedEmail) || await fetchUserDocByEmail(email);
+    const user = await fetchUserDocByEmail(formattedEmail);
 
     const userData = user.userData;
 
