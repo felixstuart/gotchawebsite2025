@@ -79,9 +79,9 @@ export const tagOut = async (email) => {
     // Get the current user
     // format the email the same way it is in the db
     //const formattedEmail = email.
-
-
-    const user = await fetchUserDocByEmail(email);
+    
+    const userEmail = formatEmail(email)
+    const user = await fetchUserDocByEmail(userEmail);
 
     const userData = user.userData;
 
