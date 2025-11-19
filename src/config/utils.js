@@ -247,11 +247,12 @@ export const getUsers = async () => {
 };
 
 function formatEmail(email) {
+  if (!email) return "";
+  // Regex to capitalize the first letter of first and last names
   return email.replace(/^([^@]+)/, (m) =>
     m
       .split("_")
       .map((p) => p.charAt(0).toUpperCase() + p.slice(1))
       .join("_")
-      .map((p) => p.charAt(0).toUpperCase())
   );
 }
