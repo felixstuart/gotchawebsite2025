@@ -78,18 +78,10 @@ export const tagOut = async (email) => {
   try {
     // Get the current user
     // format the email the same way it is in the db
-    const formattedEmail = email.replace(/^([^@]+)/, (m) => {
-          let formatted = m
-          .split("_")
-          .map((p) => p.charAt(0).toUpperCase() + p.slice(1))
-          .join("_")
-          formatted = formatted.charAt(0).toUpperCase() + formatted.slice(1);
-
-  return formatted;
-});
+    //const formattedEmail = email.
 
 
-    const user = await fetchUserDocByEmail(formattedEmail);
+    const user = await fetchUserDocByEmail(email);
 
     const userData = user.userData;
 
@@ -260,5 +252,6 @@ function formatEmail(email) {
       .split("_")
       .map((p) => p.charAt(0).toUpperCase() + p.slice(1))
       .join("_")
+      .map((p) => p.charAt(0).toUpperCase())
   );
 }
